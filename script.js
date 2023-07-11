@@ -1,6 +1,18 @@
 
 let myLibrary = [];
 
+const loadLibraryFromLocalStorage = () => {
+    // let libraryData = localStorage.getItem('library');
+    // if(libraryData) {
+    //     myLibrary = JSON.parse(libraryData);
+    //     displayBook();
+    // }
+
+    if (localStorage.getItem('library')) {
+        myLibrary = JSON.parse(localStorage.getItem('library'));
+    }
+}
+
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
@@ -24,23 +36,10 @@ const addBookToLibrary = (title, author, pages, read) => {
 
     let library = myLibrary.push(newBook);
 
+    saveLibraryToLocalStorage();
+
     return library;
 };
-
-const saveLibraryToLocalStorage = () => {
-    localStorage.setItem('library', JSON.stringify(myLibrary));
-}
-
-const loadLibraryFromLocalStorage = () => {
-    let libraryData = localStorage.getItem('library');
-    if(libraryData) {
-        myLibrary = JSON.parse(libraryData);
-        displayBook();
-    }
-}
-
-loadLibraryFromLocalStorage();
-
 
 
 console.log(myLibrary);
@@ -78,6 +77,7 @@ const displayBook = () => {
         bookElement.appendChild(removeBookButton);
         bookElement.appendChild(readStatusButton);
         booksContainer.appendChild(bookElement);
+
     });
 };
 
@@ -85,6 +85,7 @@ const displayBook = () => {
 const toggleReadStatus = (e) => {
     let status = e.target.dataset.index;
     myLibrary[status].read = !myLibrary[status].read;
+    saveLibraryToLocalStorage();
     displayBook();
 }
 
@@ -92,7 +93,7 @@ const toggleReadStatus = (e) => {
 const removeButton = (e) => {
     let index = e.target.dataset.index;
     myLibrary.splice(index, 1);
-
+    saveLibraryToLocalStorage();
     displayBook();
 }
 
@@ -119,6 +120,17 @@ const handleFormSubmit = (e) => {
 }
 
 document.getElementById('new-book-form').addEventListener('submit', handleFormSubmit);
+
+
+const saveLibraryToLocalStorage = () => {
+    localStorage.setItem('library', JSON.stringify(myLibrary));
+}
+
+loadLibraryFromLocalStorage();
+displayBook();
+
+
+
 
 
 
