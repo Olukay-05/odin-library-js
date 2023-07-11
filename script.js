@@ -27,6 +27,20 @@ const addBookToLibrary = (title, author, pages, read) => {
     return library;
 };
 
+const saveLibraryToLocalStorage = () => {
+    localStorage.setItem('library', JSON.stringify(myLibrary));
+}
+
+const loadLibraryFromLocalStorage = () => {
+    let libraryData = localStorage.getItem('library');
+    if(libraryData) {
+        myLibrary = JSON.parse(libraryData);
+        displayBook();
+    }
+}
+
+loadLibraryFromLocalStorage();
+
 
 
 console.log(myLibrary);
@@ -55,10 +69,24 @@ const displayBook = () => {
         removeBookButton.dataset.index = index;
         removeBookButton.addEventListener('click', removeButton);
 
+
+        let readStatusButton = document.createElement('button');
+        readStatusButton.textContent = 'Read';
+        readStatusButton.dataset.index = index;
+        readStatusButton.addEventListener('click', toggleReadStatus);
+
         bookElement.appendChild(removeBookButton);
+        bookElement.appendChild(readStatusButton);
         booksContainer.appendChild(bookElement);
     });
 };
+
+
+const toggleReadStatus = (e) => {
+    let status = e.target.dataset.index;
+    myLibrary[status].read = !myLibrary[status].read;
+    displayBook();
+}
 
 
 const removeButton = (e) => {
