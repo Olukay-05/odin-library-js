@@ -38,7 +38,7 @@ const displayBook = () => {
 
 
 
-    myLibrary.forEach(book => {
+    myLibrary.forEach((book, index) => {
         let bookElement = document.createElement('div');
         bookElement.id = 'book';
         bookElement.innerHTML = `
@@ -48,9 +48,25 @@ const displayBook = () => {
             <h4>Read: ${book.read ? 'Yes' : 'No'}</h4>
         `;
 
+       
+
+        let removeBookButton = document.createElement('button');
+        removeBookButton.textContent = 'Remove Book';
+        removeBookButton.dataset.index = index;
+        removeBookButton.addEventListener('click', removeButton);
+
+        bookElement.appendChild(removeBookButton);
         booksContainer.appendChild(bookElement);
     });
 };
+
+
+const removeButton = (e) => {
+    let index = e.target.dataset.index;
+    myLibrary.splice(index, 1);
+
+    displayBook();
+}
 
 
 
