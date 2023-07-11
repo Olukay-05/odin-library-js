@@ -14,21 +14,20 @@ function Book(title, author, pages, read) {
 }
 
 
-const addBookToLibrary = () => {
-    let title = prompt("Enter the book title: ");
-    let author = prompt("Enter the book author");
-    let pages = prompt("Enter the number of pages");
-    let read = confirm("Has the book been read? ");
+const addBookToLibrary = (title, author, pages, read) => {
+    // let title = prompt("Enter the book title: ");
+    // let author = prompt("Enter the book author");
+    // let pages = prompt("Enter the number of pages");
+    // let read = confirm("Has the book been read? ");
 
     let newBook = new Book(title, author, pages, read);
 
     let library = myLibrary.push(newBook);
 
     return library;
-}
+};
 
-addBookToLibrary();
-displayBook();
+
 
 console.log(myLibrary);
 
@@ -50,8 +49,34 @@ const displayBook = () => {
         `;
 
         booksContainer.appendChild(bookElement);
-    })
+    });
+};
+
+
+
+
+const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    let title = document.getElementById('title-input').value;
+    let author = document.getElementById('author-input').value;
+    let pages = document.getElementById('pages-input').value;
+    let read = document.getElementById('read-input').checked;
+
+    addBookToLibrary(title, author, pages, read);
+
+    document.getElementById('title-input').value = '';
+    document.getElementById('author-input').value = '';
+    document.getElementById('pages-input').value = '';
+    document.getElementById('read-input').checked = false;
+
+  displayBook();
+
 }
+
+document.getElementById('new-book-form').addEventListener('submit', handleFormSubmit);
+
+
 
 
 
